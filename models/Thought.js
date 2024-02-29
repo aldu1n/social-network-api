@@ -14,10 +14,6 @@ const thoughtSchema = new Schema(
             required: true,
         },
         reactions: [reactionSchema],
-        createdAt: {
-            type: Date,
-            default: Date.now,
-        },
     },
     {
         toJSON: {
