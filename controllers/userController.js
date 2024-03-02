@@ -6,9 +6,10 @@ module.exports = {
     async getAllUsers (req, res) {
         try {
             const userData = await User.find()
-            .select('-__v')
             .populate('thoughts');
-            res.json(userData);
+
+        res.json(userData);
+
         } catch (err) {
             res.status(500).json(err);
         }
@@ -17,14 +18,14 @@ module.exports = {
     async getSingleUser (req, res) {
         try {
             const userData = await User.findOne({ _id: req.params.userId })
-            .select('-__v')
             .populate('thoughts');
 
             if (!userData) {
                 res.status(404).json({ message: 'No user found with this ID!' });
-            } else {
-                res.json(userData);
             }
+
+        res.json(userData);
+
         } catch (err) {
             res.status(500).json(err);
         }
@@ -33,7 +34,9 @@ module.exports = {
     async createUser (req, res) {
         try {
             const userData = await User.create(req.body);
-            res.json(userData);
+
+        res.json(userData);
+
         } catch (err) {
             res.status(500).json(err);
         }
@@ -42,16 +45,17 @@ module.exports = {
     async updateUser (req, res) {
         try {
             const userData = await User.findOneAndUpdate(
-                { _id: req.params.userID },
+                { _id: req.params.userId },
                 { $set: req.body },
                 { runValidators: true, new: true }
             );
 
             if (!userData) {
                 res.status(404).json({ message: 'No user found with this ID!' });
-            } else {
-                res.json(userData);
             }
+
+        res.json(userData);
+
         } catch (err) {
             res.status(500).json(err);
         }
@@ -63,9 +67,10 @@ module.exports = {
 
             if (!userData) {
                 res.status(404).json({ message: 'No user found with this ID!' });
-            } else {
-                res.json(userData);
-            };
+            }
+
+        res.json(userData);
+
         } catch (err) {
             res.status(500).json(err);
         }
@@ -75,15 +80,16 @@ module.exports = {
         try {
             const friendData = await User.findOneAndUpdate(
                 { _id: req.params.userId },
-                { $addToSet: { friends: req.params.friendId } },
+                { $addToSet: { friends: req.params.friendId }},
                 { runValidators: true, new: true }
             );
 
             if (!friendData) {
                 res.status(404).json({ message: 'No user found with this ID!'});
-            } else {
-                res.json(friendData);
             }
+                
+        res.json(friendData);
+
         } catch (err) {
             res.status(500).json(err);
         }
@@ -99,9 +105,10 @@ module.exports = {
 
             if (!friendData) {
                 res.status(404).json({ message: 'No user found with this ID!'});
-            } else {
-                res.json(friendData);
             }
+
+        res.json(friendData);
+
         } catch (err) {
             res.status(500).json(err);
         }

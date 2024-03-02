@@ -19,9 +19,10 @@ module.exports = {
 
             if (!thoughtData) {
                 res.status(404).json({ message: 'No thought found with this ID!'});
-            } else {
-                res.json(thoughtData);
             }
+
+        res.json(thoughtData);
+
         } catch (err) {
             res.status(500).json(err);
         }
@@ -33,10 +34,12 @@ module.exports = {
 
             const userData = await User.findByIdAndUpdate(
                 req.body.userId,
-                { $addToSet: { thoughts: thoughtData._id } },
+                { $addToSet: { thoughts: thoughtData._id }},
                 { runValidators: true, new: true }
             );
-            res.json({ thoughtData, userData });
+
+        res.json({ thoughtData, userData });
+        
         } catch (err) {
             res.status(500).json(err);
         }
@@ -52,9 +55,10 @@ module.exports = {
 
             if (!thoughtData) {
                 res.status(404).json({ message: 'No thought found with this ID!' });
-            } else {
-                res.json(thoughtData);
             }
+
+        res.json(thoughtData);
+
         } catch (err) {
             res.status(500).json(err);
         }
@@ -66,9 +70,10 @@ module.exports = {
     
           if (!thoughtData) {
             res.status(404).json({ message: 'No thought found with this ID!' });
-          } else {
-            res.json(thoughtData);
           }
+
+        res.json(thoughtData);
+
         } catch (err) {
           res.status(500).json(err);
         }
@@ -78,15 +83,16 @@ module.exports = {
         try {
             const reactionData = await Thought.findOneAndUpdate(
                 { _id: req.params.thoughtId },
-                { $addToSet: { reactions: req.body } },
+                { $addToSet: { reactions: req.body }},
                 { runValidators: true, new: true },
             );
 
             if(!reactionData) {
                 res.status(404).json({ message: 'No thought found with this ID!' });
-            } else {
-                res.json(reactionData);
             }
+
+        res.json(reactionData);
+
         } catch (err) {
             res.status(500).json(err);
         }
@@ -96,14 +102,15 @@ module.exports = {
         try {
             const reactionData = await Thought.findOneAndUpdate(
                 { _id: req.params.thoughtId },
-                { $pull: { reactions: { _id: req.params.reactionId }}},
+                { $pull: { reactions: { reactionId: req.params.reactionId }}},
                 { runValidators: true, new: true }
             );
             if(!reactionData) {
                 res.status(404).json({ message: 'No thought found with this ID!' });
-            } else {
-                res.json(reactionData);
             }
+
+        res.json(reactionData);
+
         } catch (err) {
             res.status(500).json(err);
         }
