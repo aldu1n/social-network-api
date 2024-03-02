@@ -1,5 +1,7 @@
+// Express imports.
 const router = require('express').Router();
 
+// Thought controller query functions imports.
 const {
     getAllThoughts,
     getSingleThought,
@@ -10,6 +12,7 @@ const {
     deleteReaction
 } = require('../../controllers/thoughtController');
 
+// Route setup, example: http://localhost:3001/api/thoughts/...
 router
 .route('/')
 .get(getAllThoughts)
@@ -29,4 +32,5 @@ router
 .route('/:thoughtId/reactions/:reactionId')
 .delete(deleteReaction);
 
+//Express export.
 module.exports = router;

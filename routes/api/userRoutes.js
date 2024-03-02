@@ -1,5 +1,7 @@
+// Express imports.
 const router = require('express').Router();
 
+// User controller query functions imports.
 const {
     getAllUsers,
     getSingleUser,
@@ -10,6 +12,7 @@ const {
     deleteFriend
 } = require('../../controllers/userController');
 
+// Route setup, example: http://localhost:3001/api/users/...
 router
 .route('/')
 .get(getAllUsers)
@@ -26,4 +29,5 @@ router
 .post(addFriend)
 .delete(deleteFriend);
 
+//Express export.
 module.exports = router;
