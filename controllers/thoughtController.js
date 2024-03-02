@@ -5,7 +5,7 @@ module.exports = {
     async getAllThoughts (req, res) {
         try {
             const thoughtData = await Thought.find();
-            res.status(200).json(thoughtData);
+            res.json(thoughtData);
         } catch (err) {
             res.status(500).json(err);
         }
@@ -14,13 +14,13 @@ module.exports = {
     async getSingleThought (req, res) {
         try {
             const thoughtData = await Thought.findOne({
-                _id: req.params.id
+                _id: req.params.thoughtId
             });
 
             if (!thoughtData) {
-                return res.status(400).json({ message: 'No thought found with this ID!'});
+                res.status(404).json({ message: 'No thought found with this ID!'});
             } else {
-                res.status(200).json(thoughtData);
+                res.json(thoughtData);
             }
         } catch (err) {
             res.status(500).json(err);
@@ -32,11 +32,11 @@ module.exports = {
             const thoughtData = await Thought.create(req.body);
 
             const userData = await User.findByIdAndUpdate(
-                req.body.id,
+                req.body.userId,
                 { $addToSet: { thoughts: thoughtData._id } },
                 { runValidators: true, new: true }
             );
-            res.status(200).json({ thoughtData, userData });
+            res.json({ thoughtData, userData });
         } catch (err) {
             res.status(500).json(err);
         }
@@ -45,15 +45,15 @@ module.exports = {
     async updateThought (req, res) {
         try {
             const thoughtData = await Thought.findOneAndUpdate(
-                { _id: req.params.id },
+                { _id: req.params.thoughtId },
                 { $set: req.body },
                 { runValidators: true, new: true },
             );
 
             if (!thoughtData) {
-                return res.status(400).json({ message: 'No thought found with this ID!' });
+                res.status(404).json({ message: 'No thought found with this ID!' });
             } else {
-                res.status(200).json(thoughtData);
+                res.json(thoughtData);
             }
         } catch (err) {
             res.status(500).json(err);
@@ -65,12 +65,11 @@ module.exports = {
           const thoughtData = await Thought.findOneAndDelete({ _id: req.params.thoughtId });
     
           if (!thoughtData) {
-            return res.status(404).json({ message: 'No thought found with this ID!' });
+            res.status(404).json({ message: 'No thought found with this ID!' });
           } else {
-            res.status(200).json(thoughtData);
+            res.json(thoughtData);
           }
         } catch (err) {
-          console.log(err);
           res.status(500).json(err);
         }
     },
@@ -78,15 +77,15 @@ module.exports = {
     async addReaction (req, res) {
         try {
             const reactionData = await Thought.findOneAndUpdate(
-                { _id: req.params.id },
+                { _id: req.params.thoughtId },
                 { $addToSet: { reactions: req.body } },
                 { runValidators: true, new: true },
             );
 
             if(!reactionData) {
-                return res.status(400).json({ message: 'No thought found with this ID!' });
+                res.status(404).json({ message: 'No thought found with this ID!' });
             } else {
-                res.status(200).json(reaction);
+                res.json(reactionData);
             }
         } catch (err) {
             res.status(500).json(err);
@@ -95,11 +94,15 @@ module.exports = {
 
     async deleteReaction (req, res) {
         try {
-            const reactionData = await Thought.findOneAndDelete({ reactionId: req.params.reactionId });
+            const reactionData = await Thought.findOneAndUpdate(
+                { _id: req.params.thoughtId },
+                { $pull: { reactions: { _id: req.params.reactionId }}},
+                { runValidators: true, new: true }
+            );
             if(!reactionData) {
-                return res.status(400).json({ message: 'No thought found with this ID!' });
+                res.status(404).json({ message: 'No thought found with this ID!' });
             } else {
-                res.status(200).json(reaction);
+                res.json(reactionData);
             }
         } catch (err) {
             res.status(500).json(err);
